@@ -17,10 +17,20 @@ var Square = function(x, y){
   this.y = y;
 };
 
+Square.prototype.plus= function(other)
+{
+  return new Square( this.x + other.x, this.y + other.y);
+};
+
 var Grid = function( width, height ) {
   this.space = new Array( width * height );
   this.height = height;
   this.width = width;
+};
+
+Grid.prototype.contains = function( square ){
+  return square.x >= 0 && square.x < this.width && 
+    square.y >= 0 && square.y < this.height;
 };
 
 Grid.prototype.get = function( square ){
@@ -31,7 +41,23 @@ Grid.prototype.set = function( square, value ){
   return this.space[ this.width * square.x + square.y ] = value;
 };
 
+Grid.prototype.forEach = function( ){
+
+};
+
+
 var directions = "n ne e se s sw w nw".split(" ");
+
+var directionVectors = {
+  "n":  new Square( 0, -1),
+  "ne": new Square( 1, -1),
+  "e":  new Square( 1,  0),
+  "se": new Square( 1,  1),
+  "s":  new Square( 0,  1),
+  "sw": new Square(-1,  1),
+  "w":  new Square(-1,  0),
+  "nw": new Square(-1, -1)  
+};
 
 var randomElement = function(array) {
   return array[ Math.floor( Math.random() * array.length )];
@@ -39,6 +65,10 @@ var randomElement = function(array) {
 
 var BouncingCritter = function( ) {
   this.direction = randomElement( directions );
+};
+
+var BouncingCritter.prototype.act = function() {
+
 };
 
 var Wall = function() {};
@@ -87,6 +117,3 @@ var world = new World( plan,
 );
 
 console.log( world.toString() );
-
-
-
