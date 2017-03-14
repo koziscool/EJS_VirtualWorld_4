@@ -41,8 +41,16 @@ Grid.prototype.set = function( square, value ){
   return this.space[ this.width * square.x + square.y ] = value;
 };
 
-Grid.prototype.forEach = function( ){
+Grid.prototype.forEach = function( f, context ){
+  for( var y = 0; y < this.height; y++){
+    for( var x = 0; x < this.width; x++){
+      var value = this.space[ x + y * this.width ];
+      if (value) {
+        f.call( context, value, new Square(x, y));
+      }
+    }
 
+  }
 };
 
 
@@ -67,8 +75,15 @@ var BouncingCritter = function( ) {
   this.direction = randomElement( directions );
 };
 
-var BouncingCritter.prototype.act = function() {
-
+BouncingCritter.prototype.act = function( view ) {
+  if (view.look(this.direction) !== " "){
+    this.direction = view.find(" ") || "s"
+  }
+  var ret_obj = {
+    type: "move",
+    direction: this.direction
+  };
+  return ret_obj;
 };
 
 var Wall = function() {};
